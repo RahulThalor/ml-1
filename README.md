@@ -54,6 +54,30 @@ The dashboard evaluates the model on a **stratified 20% holdout split** and repo
 
 ---
 
+## 📈 Model Evaluation
+
+This project includes notebook-driven evaluation using the raw dataset and direct model metrics:
+- **Accuracy:** 87.10%
+- **ROC-AUC:** 0.8546
+- **Test set size:** 29,734 samples
+
+### Confusion matrix (threshold = 0.5)
+- True Negatives: **22,212**
+- False Positives: **282**
+- False Negatives: **3,553**
+- True Positives: **3,687**
+
+### Classification performance
+- **No Default (0)**: precision 0.862, recall 0.987, F1-score 0.921
+- **Default (1)**: precision 0.929, recall 0.509, F1-score 0.658
+
+### Threshold tuning
+- Lowering the probability threshold to **0.30** increases default recall to **61.8%** while retaining **84.7%** accuracy.
+
+The notebook also generates a **seaborn heatmap** for the confusion matrix and plots the **ROC curve** to visualize classifier performance.
+
+---
+
 ## 🎯 Dashboard Features
 
 - Executive summary KPI cards
