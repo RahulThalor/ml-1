@@ -33,7 +33,7 @@ These metrics are computed on a **20% held-out test split** (29,734 samples).
 
 > Four real-time metric cards styled with per-card accent colors (cyan / red / gold / purple).
 
-![Executive Summary](data/images/01_executive_summarys.png)
+
 
 ---
 
@@ -41,7 +41,7 @@ These metrics are computed on a **20% held-out test split** (29,734 samples).
 
 > Interactive Plotly donut chart showing **75.4% No Default** vs **24.6% Default** across 148,670 borrowers.
 
-![Default Distribution](data/images/02_data_overview1s.png)
+
 
 ---
 
@@ -52,7 +52,7 @@ These metrics are computed on a **20% held-out test split** (29,734 samples).
 > - `rate_of_interest` ↔ `Interest_rate_spread` → **0.61** (strong positive)
 > - `income` ↔ `dtir1` → **−0.27** (negative — higher income = lower debt ratio)
 
-![Correlation Matrix](data/images/02_data_overview2s.png)
+
 
 ---
 
@@ -60,8 +60,6 @@ These metrics are computed on a **20% held-out test split** (29,734 samples).
 
 > Top feature drivers of credit default, color-coded by direction:
 > 🔴 Red = increases default risk | 🟢 Green = decreases default risk
-
-![Feature Insights](data/images/03_feature_insightss.png)
 
 **Key findings:**
 - `credit_type_EQUI` has the **strongest positive** log-odds coefficient (~8.5)
@@ -74,7 +72,7 @@ These metrics are computed on a **20% held-out test split** (29,734 samples).
 
 > AUC = 0.8675. The model correctly identifies 5,210 true defaults on the test set.
 
-![Model Performance](data/images/04_model_performances.png)
+
 
 | | Predicted No Default | Predicted Default |
 |---|---|---|
