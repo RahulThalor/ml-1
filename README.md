@@ -149,6 +149,7 @@ In credit risk, the dataset is imbalanced (~75% non-default). A naïve model tha
 | Features | 34 columns |
 | Target Column | `Status` (0 = No Default, 1 = Default) |
 | Class Balance | No Default: 75.4% / Default: 24.6% |
+| Balanced Dataset | `data/raw/Loan_Default_balanced.csv` (112,031 samples per class via SMOTE) |
 
 **Key features used:**
 - `loan_amount`, `property_value`, `income` (numeric)
@@ -208,12 +209,27 @@ Credit-Risk-Scoring/
 ├── notebooks/
 │   └── EDA.ipynb                 # Exploratory Data Analysis
 │
+├── tests/
+│   └── test_balance_data.py      # Unit tests for the balance script
+├── balance_data.py               # SMOTE balancing script
 ├── requirements.txt
 ├── README.md
 └── .gitignore
 ```
 
 ---
+
+## 🧪 Tests
+
+This repository now includes automated unit tests for the dataset balancing script.
+
+```bash
+# Install development dependencies
+pip install -r requirements.txt
+
+# Run the tests
+pytest
+```
 
 ## ▶️ How to Run Locally
 

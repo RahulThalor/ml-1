@@ -46,3 +46,5 @@ tornado==6.5.4
 typing_extensions==4.15.0
 tzdata==2025.3
 urllib3==2.6.3
+imbalanced-learn==0.14.1
+pytest>=8.0.0

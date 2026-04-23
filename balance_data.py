@@ -1,49 +1,62 @@
 import pandas as pd
-import numpy as np
 from imblearn.over_sampling import SMOTE
-from sklearn.preprocessing import StandardScaler
 
-# Load data
-df = pd.read_csv('data/raw/Loan_Default.csv')
+RAW_DATA_PATH = "data/raw/Loan_Default.csv"
+BALANCED_DATA_PATH = "data/raw/Loan_Default_balanced.csv"
 
-# Drop unnecessary columns
-df = df.drop(columns=["ID", "Interest_rate_spread"])
 
-# Identify numeric and categorical columns
-numeric_cols = df.select_dtypes(include=["int64", "float64"]).columns.tolist()
-categorical_cols = df.select_dtypes(include=["object"]).columns.tolist()
+def load_data(path: str = RAW_DATA_PATH) -> pd.DataFrame:
+    return pd.read_csv(path)
 
-numeric_cols.remove("Status")
 
-# Fill missing values
-for col in numeric_cols:
-    df[col].fillna(df[col].median(), inplace=True)
+def preprocess_raw_data(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.copy()
+    drop_cols = [col for col in ["ID", "Interest_rate_spread"] if col in df.columns]
+    if drop_cols:
+        df = df.drop(columns=drop_cols)
 
-for col in categorical_cols:
-    df[col].fillna(df[col].mode()[0], inplace=True)
+    numeric_cols = df.select_dtypes(include=["int64", "float64"]).columns.tolist()
+    categorical_cols = df.select_dtypes(include=["object"]).columns.tolist()
 
-# One-hot encode categorical variables
-df = pd.get_dummies(df, drop_first=True)
+    if "Status" in numeric_cols:
+        numeric_cols.remove("Status")
 
-# Separate features and target
-X = df.drop("Status", axis=1)
-y = df["Status"]
+    for col in numeric_cols:
+        df[col] = df[col].fillna(df[col].median())
 
-print("Original class distribution:")
-print(y.value_counts())
+    for col in categorical_cols:
+        df[col] = df[col].fillna(df[col].mode()[0])
 
-# Apply SMOTE to balance the dataset
-smote = SMOTE(random_state=42)
-X_res, y_res = smote.fit_resample(X, y)
+    df = pd.get_dummies(df, drop_first=True)
+    return df
 
-print("Balanced class distribution:")
-print(pd.Series(y_res).value_counts())
 
-# Combine back to dataframe
-df_balanced = pd.DataFrame(X_res, columns=X.columns)
-df_balanced['Status'] = y_res
+def balance_data(df: pd.DataFrame, random_state: int = 42) -> pd.DataFrame:
+    X = df.drop("Status", axis=1)
+    y = df["Status"]
 
-# Save the balanced dataset
-df_balanced.to_csv('data/raw/Loan_Default_balanced.csv', index=False)
+    smote = SMOTE(random_state=random_state)
+    X_res, y_res = smote.fit_resample(X, y)
 
-print("Balanced dataset saved to data/raw/Loan_Default_balanced.csv")
+    balanced_df = pd.DataFrame(X_res, columns=X.columns)
+    balanced_df["Status"] = y_res
+    return balanced_df
+
+
+def save_balanced_dataset(df: pd.DataFrame, path: str = BALANCED_DATA_PATH) -> None:
+    df.to_csv(path, index=False)
+
+
+def main() -> None:
+    raw_df = load_data()
+    processed = preprocess_raw_data(raw_df)
+    balanced = balance_data(processed)
+    save_balanced_dataset(balanced)
+
+    print("Balanced dataset saved to", BALANCED_DATA_PATH)
+    print("Balanced class distribution:")
+    print(balanced["Status"].value_counts())
+
+
+if __name__ == "__main__":
+    main()
